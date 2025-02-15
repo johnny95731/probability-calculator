@@ -352,7 +352,6 @@ watch(chartGrid, (newVal) => {
           icon="information-outline"
         >
           <VTooltip
-            v-memo="sortedVars"
             activator="parent"
             location="bottom"
           >

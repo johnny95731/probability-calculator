@@ -430,7 +430,6 @@ watch(chartPlace, (newVal) => {
           icon="information-outline"
         >
           <VTooltip
-            v-memo="sortedVars"
             activator="parent"
             location="bottom"
           >
