@@ -15,9 +15,12 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
   ssr: true,
+  features: {
+    devLogs: true,
+  },
 
   app: {
-    baseURL: process.env.NODE_ENV === 'production' ? '/probability-calc/' : '/',
+    baseURL: process.env.NODE_ENV === 'production' ? '/probability-calculator/' : '/',
     buildAssetsDir: '/static/',
     head: {
       charset: 'utf-8',
@@ -65,11 +68,6 @@ export default defineNuxtConfig({
         compress: {
           drop_console: ['log', 'time', 'timeEnd']
         },
-        mangle: {
-          properties: {
-            regex: /[^_]_$/
-          }
-        }
       }
     },
     ssr: {
@@ -85,5 +83,11 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      failOnError: false,
+    },
   },
 });
