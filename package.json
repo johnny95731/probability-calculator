@@ -1,0 +1,43 @@
+{
+  "name": "probability-calc",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "predeploy": "npm run generate",
+    "deploy": "gh-pages --dotfiles -d dist"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@pinia/nuxt": "^0.8.0",
+    "@stdlib/math-base-special-gammainc": "^0.2.2",
+    "chart.js": "^4.4.7",
+    "nuxt": "^3.14.1592",
+    "pinia": "^2.2.8",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@nuxt/eslint": "^0.7.2",
+    "@stdlib/math-base-special-beta": "^0.3.0",
+    "@stdlib/math-base-special-betainc": "^0.2.2",
+    "eslint": "^9.16.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "gh-pages": "^6.2.0",
+    "sass": "^1.82.0",
+    "terser": "^5.37.0",
+    "tinybench": "^3.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vitest": "^2.1.8",
+    "vue-tsc": "^2.1.10",
+    "vuetify": "^3.7.4"
+  }
+}

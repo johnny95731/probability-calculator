@@ -1,0 +1,68 @@
+
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1"
+    viewBox="0 0 360 240"
+    stroke-width="1"
+    width="100%"
+    fill="none"
+    style="aspect-ratio: 9 / 5;"
+  >
+    <circle
+      cx="130"
+      cy="120"
+      r="100"
+      fill="#ff7"
+    />
+    <circle
+      cx="230"
+      cy="120"
+      r="100"
+      fill="#7ff"
+    />
+    <path
+      d="M180 33 a100 100 0 0 0 0 174 a100 100 0 0 0 0 -174 z"
+      fill="#7fff80"
+    />
+    <circle
+      cx="130"
+      cy="120"
+      r="100"
+      stroke="#000"
+    />
+    <circle
+      cx="230"
+      cy="120"
+      r="100"
+      stroke="#000"
+    />
+    <rect
+      x="0"
+      y="0"
+      width="360"
+      height="240"
+      stroke="#000"
+    />
+    <g
+      text-anchor="middle"
+      stroke="none"
+      fill="#000"
+      font-size="30px"
+      font-weight="bold"
+    >
+      <text
+        x="90"
+        y="132"
+      >A</text>
+      <text
+        x="180"
+        y="132"
+      >A⋂B</text>
+      <text
+        x="270"
+        y="132"
+      >B</text>
+    </g>
+  </svg>
+</template>
