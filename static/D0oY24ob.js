@@ -1,1 +1,0 @@
-import{O as i,al as t,i as o}from"./CX71UtI7.js";const s=["static","relative","fixed","absolute","sticky"],a=i({position:{type:String,validator:i=>s.includes(i)}},"position");function n(i){let s=arguments.length>1&&void 0!==arguments[1]?arguments[1]:t();return{positionClasses:o((()=>i.position?`${s}--${i.position}`:void 0))}}export{a as m,n as u};

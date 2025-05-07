@@ -1,0 +1,1 @@
+import{O as i,al as n,i as o}from"./BYT725KD.js";const e=["static","relative","fixed","absolute","sticky"],u=i({position:{type:String,validator:t=>e.includes(t)}},"position");function p(t){let s=arguments.length>1&&arguments[1]!==void 0?arguments[1]:n();return{positionClasses:o(()=>t.position?`${s}--${t.position}`:void 0)}}export{u as m,p as u};
