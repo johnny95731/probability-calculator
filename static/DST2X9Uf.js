@@ -1,0 +1,1 @@
+import{O as xt,al as le,i as te}from"./CUVt92CJ.js";const wt=["static","relative","fixed","absolute","sticky"],kt=xt({position:{type:String,validator:t=>wt.includes(t)}},"position");function k(t){let i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:le();return{positionClasses:te((()=>t.position?`${i}--${t.position}`:void 0))}}export{kt as m,k as u};
