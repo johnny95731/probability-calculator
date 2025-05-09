@@ -1,12 +1,12 @@
-import { O as propsFactory, a7 as makeComponentProps, P as genericComponent, T as useRender, A as createVNode, a8 as makeThemeProps, ae as toRef, aq as provideTheme, ar as useRtl, X as shallowRef, i as computed, ad as provideDefaults, at as convertToUnit, r as ref, ax as clamp, E as watch, o as onMounted, e as onBeforeUnmount, aV as makeLayoutItemProps, Q as useProxiedModel, ao as useToggleScope, aW as useLayoutItem, L as mergeProps, ay as watchEffect, aX as useLayout, d as defineComponent, aC as useDisplay, aY as useRoute, u as useRouter, v as openBlock, x as createElementBlock, aS as createSlots, G as unref, B as withCtx, aZ as PageRouteSymbol, H as setBlockTracking, C as createTextVNode, K as Fragment, J as renderList, Y as renderSlot, F as createBlock, z as toDisplayString } from "./nAMcUtwR.js";
+import { O as propsFactory, a7 as makeComponentProps, P as genericComponent, T as useRender, A as createVNode, a8 as makeThemeProps, ae as toRef, aq as provideTheme, ar as useRtl, X as shallowRef, i as computed, ad as provideDefaults, at as convertToUnit, r as ref, ax as clamp, E as watch, o as onMounted, e as onBeforeUnmount, aV as makeLayoutItemProps, Q as useProxiedModel, ao as useToggleScope, aW as useLayoutItem, L as mergeProps, ay as watchEffect, aX as useLayout, d as defineComponent, aC as useDisplay, aY as useRoute, u as useRouter, v as openBlock, x as createElementBlock, aS as createSlots, G as unref, B as withCtx, aZ as PageRouteSymbol, H as setBlockTracking, C as createTextVNode, K as Fragment, J as renderList, Y as renderSlot, F as createBlock, z as toDisplayString } from "./CLygsIoC.js";
 import { p as pages } from "./CUPcO2LI.js";
-import { u as useLayoutTabsStore } from "./DtjBwk2o.js";
-import { a as VTabs, b as VTab } from "./D2NN67Qk.js";
-import { h as makeTagProps, j as makeBorderProps, k as makeElevationProps, l as makeRoundedProps, d as useBackgroundColor, p as useBorder, r as useElevation, s as useRounded, K as VImg, a as VDefaultsProvider, f as makeDimensionProps, g as useDimension } from "./D3F98-YQ.js";
-import { D as VExpandTransition, C as useSsrBoot, F as VListItem } from "./BTmLGcui.js";
-import "./B6xficXq.js";
-import "./Br7ZvRxH.js";
-import "./BBu8I3H9.js";
+import { u as useLayoutTabsStore } from "./J586zhkH.js";
+import { a as VTabs, b as VTab } from "./dwKav9SY.js";
+import { h as makeTagProps, j as makeBorderProps, k as makeElevationProps, l as makeRoundedProps, d as useBackgroundColor, p as useBorder, r as useElevation, s as useRounded, K as VImg, a as VDefaultsProvider, f as makeDimensionProps, g as useDimension } from "./iovqoryD.js";
+import { D as VExpandTransition, C as useSsrBoot, F as VListItem } from "./ChaVi1sj.js";
+import "./D7h6Q_jA.js";
+import "./BOPhn_H-.js";
+import "./CzYvQyrK.js";
 const makeVToolbarTitleProps = propsFactory({
   text: String,
   ...makeComponentProps(),
@@ -451,8 +451,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const tabValue = ref(useRoute().path);
     const updateTab = async (to) => {
       tabValue.value = to.path;
-      layoutTabState.setExtTabs(to.path);
-      extTabs.value = layoutTabState.extTabs.map((item) => ({
+      layoutTabState.setExtTabs_(to.path);
+      extTabs.value = layoutTabState.extTabs_.map((item) => ({
         ...item,
         class: "text-transform-none"
       }));
@@ -519,8 +519,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                 "bg-color": "primary",
                 "align-tabs": "center",
                 items: unref(extTabs),
-                "model-value": unref(layoutTabState).extTabValue,
-                "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(layoutTabState).setExtTabValue((_ctx._.provides[PageRouteSymbol] || _ctx.$route).path, $event))
+                "model-value": unref(layoutTabState).tabIdx_,
+                "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(layoutTabState).setExtTab_((_ctx._.provides[PageRouteSymbol] || _ctx.$route).path, $event))
               }, null, 8, ["items", "model-value"])
             ]),
             key: "0"

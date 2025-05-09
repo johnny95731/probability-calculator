@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./D7gtOTeW.js","./BUgl8VVT.js","./ooHpEMx6.js","./D3F98-YQ.js","./VAvatar.C6LIfdFS.css","./VContainer.BZNMcxcA.css","./BTmLGcui.js","./common.Cp6bJ9QT.css","./ParamLabel.Cz9Ylhoj.css","./B6xficXq.js","./D9ovcV8X.js","./D2NN67Qk.js","./BBu8I3H9.js","./VTabs.BIZs_bTz.css","./index.DU7KPzaC.css","./Bd6oIQyB.js","./VCard.CqoC-vfg.css","./12pLfMUW.js","./Br7ZvRxH.js","./FNa5108d.js","./1tPrXgE0.js","./DtjBwk2o.js","./CUPcO2LI.js","./event-probability.BLqxe4O3.css","./BFOzltCT.js","./BIScCtkl.js","./default.DNgcTDsB.css","./BIr8brqM.js","./error-404.CnHI5nMq.css","./CCy5lByr.js","./error-500.Cr4jP4_u.css"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./6k1rL4fe.js","./Aa-mRKeE.js","./BfKDNlkB.js","./iovqoryD.js","./VAvatar.C6LIfdFS.css","./VContainer.BZNMcxcA.css","./ChaVi1sj.js","./common.Cp6bJ9QT.css","./ParamLabel.Cz9Ylhoj.css","./D7h6Q_jA.js","./BjjwOIE0.js","./dwKav9SY.js","./CzYvQyrK.js","./VTabs.BIZs_bTz.css","./index.DU7KPzaC.css","./CDB1RMSL.js","./VCard.CqoC-vfg.css","./kEZ9yiBW.js","./BOPhn_H-.js","./CmLu2hUG.js","./1tPrXgE0.js","./J586zhkH.js","./CUPcO2LI.js","./event-probability.BLqxe4O3.css","./BqtaVE9B.js","./DTBUZJFF.js","./default.DNgcTDsB.css","./DcrS-dJR.js","./error-404.CnHI5nMq.css","./DzSZks9W.js","./error-500.Cr4jP4_u.css"])))=>i.map(i=>d[i]);
 /**
 * @vue/shared v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -14148,22 +14148,22 @@ const _routes = [
   {
     name: "continuous-distribution",
     path: "/continuous-distribution",
-    component: () => __vitePreload(() => import("./D7gtOTeW.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) : void 0, import.meta.url)
+    component: () => __vitePreload(() => import("./6k1rL4fe.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) : void 0, import.meta.url)
   },
   {
     name: "discrete-distribution",
     path: "/discrete-distribution",
-    component: () => __vitePreload(() => import("./12pLfMUW.js"), true ? __vite__mapDeps([17,10,1,2,3,4,5,6,7,8,11,12,13,14,18,15,16]) : void 0, import.meta.url)
+    component: () => __vitePreload(() => import("./kEZ9yiBW.js"), true ? __vite__mapDeps([17,10,1,2,3,4,5,6,7,8,11,12,13,14,18,15,16]) : void 0, import.meta.url)
   },
   {
     name: "event-probability",
     path: "/event-probability",
-    component: () => __vitePreload(() => import("./FNa5108d.js"), true ? __vite__mapDeps([19,20,1,2,3,4,5,6,7,8,21,9,18,22,23]) : void 0, import.meta.url)
+    component: () => __vitePreload(() => import("./CmLu2hUG.js"), true ? __vite__mapDeps([19,20,1,2,3,4,5,6,7,8,21,9,18,22,23]) : void 0, import.meta.url)
   },
   {
     name: "index",
     path: "/",
-    component: () => __vitePreload(() => import("./BFOzltCT.js"), true ? __vite__mapDeps([24,22,2,3,4,5,15,12,16]) : void 0, import.meta.url)
+    component: () => __vitePreload(() => import("./BqtaVE9B.js"), true ? __vite__mapDeps([24,22,2,3,4,5,15,12,16]) : void 0, import.meta.url)
   }
 ];
 const _wrapIf = (component, props, slots) => {
@@ -14655,7 +14655,7 @@ const components_plugin_zlvi6dcIsi = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:global-components"
 });
 const layouts = {
-  default: /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./BIScCtkl.js"), true ? __vite__mapDeps([25,22,21,9,6,3,4,7,18,11,12,13,26]) : void 0, import.meta.url))
+  default: /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./DTBUZJFF.js"), true ? __vite__mapDeps([25,22,21,9,6,3,4,7,18,11,12,13,26]) : void 0, import.meta.url))
 };
 const prefetch_client_5tzzN0oIVL = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:prefetch",
@@ -18266,8 +18266,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack2 = void 0;
-    const _Error404 = /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./BIr8brqM.js"), true ? __vite__mapDeps([27,20,28]) : void 0, import.meta.url));
-    const _Error = /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./CCy5lByr.js"), true ? __vite__mapDeps([29,20,30]) : void 0, import.meta.url));
+    const _Error404 = /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./DcrS-dJR.js"), true ? __vite__mapDeps([27,20,28]) : void 0, import.meta.url));
+    const _Error = /* @__PURE__ */ defineAsyncComponent(() => __vitePreload(() => import("./DzSZks9W.js"), true ? __vite__mapDeps([29,20,30]) : void 0, import.meta.url));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _cache) => {
       return openBlock(), createBlock(unref(ErrorTemplate), normalizeProps(guardReactiveProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack2) })), null, 16);

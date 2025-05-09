@@ -1,5 +1,5 @@
-import { a1 as defineStore } from "./nAMcUtwR.js";
-import { O as erf, S as SQRTPI_2, c as clip, P as gamma$9, Q as betainc, R as beta, T as SQRT2PI, U as storeArgsInitializer, W as PLACE, r as round$2 } from "./BTmLGcui.js";
+import { a1 as defineStore } from "./CLygsIoC.js";
+import { O as erf, S as SQRTPI_2, c as clip, P as gamma$9, Q as betainc, R as beta, T as SQRT2PI, U as storeArgsInitializer, W as PLACE, r as round$2 } from "./ChaVi1sj.js";
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
@@ -11408,71 +11408,72 @@ const contiDistribs = [
 ];
 const useContinuousStore = defineStore("continuous", {
   state: () => {
-    const { args, vars } = storeArgsInitializer(contiDistribs);
+    const { args_, vars_ } = storeArgsInitializer(contiDistribs);
     return {
-      currentIdx: 0,
-      _args: args,
-      _vars: vars,
+      currentIdx_: 0,
+      _args: args_,
+      _vars: vars_,
       calc_: {
-        place: PLACE,
-        toPercentage: true
+        place_: PLACE,
+        toPercentage_: true
       },
       chart_: {
-        points: 200,
-        extended: 10,
-        place: 3
+        points_: 200,
+        extended_: 10,
+        place_: 3
       }
     };
   },
   getters: {
-    paramRanges() {
-      return this.distribution.params.map(({ name, min: min2, max: max2, step }) => {
+    paramRanges_() {
+      return this.distribution_.params.map(({ name, min: min2, max: max2, step }) => {
         return {
           name,
-          min: typeof min2 === "number" ? min2 : min2 == null ? void 0 : min2(this.args),
-          max: typeof max2 === "number" ? max2 : max2 == null ? void 0 : max2(this.args),
+          min: typeof min2 === "number" ? min2 : min2 == null ? void 0 : min2(this.args_),
+          max: typeof max2 === "number" ? max2 : max2 == null ? void 0 : max2(this.args_),
           step
         };
       });
     },
-    varDomain() {
-      return this.distribution.domain(this.args);
+    varDomain_() {
+      return this.distribution_.domain(this.args_);
     },
-    args() {
-      return this._args[this.currentIdx];
+    args_() {
+      return this._args[this.currentIdx_];
     },
-    vars() {
-      return this._vars[this.currentIdx];
+    vars_() {
+      return this._vars[this.currentIdx_];
     },
-    distribution() {
-      return contiDistribs[this.currentIdx][1];
+    distribution_() {
+      return contiDistribs[this.currentIdx_][1];
     }
   },
   actions: {
-    setCurrent(val) {
-      this.currentIdx = val;
+    setCurrent_(val) {
+      this.currentIdx_ = val;
     },
-    setArg(name, val) {
+    setArg_(name, val) {
       if (!isNaN(+val))
-        this.args[name] = +val;
+        this.args_[name] = +val;
     },
-    setVars(idx, val) {
+    setVars_(idx, val) {
       if (!isNaN(+val))
-        this.vars[idx] = +val;
+        this.vars_[idx] = +val;
     },
-    pdf(x) {
-      const { calc_: { place } } = this;
-      return round$2(this.distribution.pdf(this.args, x), place);
+    pdf_(x) {
+      const { calc_: { place_ } } = this;
+      return round$2(this.distribution_.pdf(this.args_, x), place_);
     },
-    calcProb(vars) {
-      const { calc_: { place: place_, toPercentage: toPercentage_ } } = this;
-      const distrib = this.distribution;
+    calcProb_(vars) {
+      const { calc_: { place_, toPercentage_ } } = this;
+      const distrib = this.distribution_;
       const leftPoint = Math.min(...vars);
       const rightPoint = Math.max(...vars);
       const scale = toPercentage_ ? 100 : 1;
-      const L = distrib.pdf(this.args, leftPoint), R = distrib.pdf(this.args, rightPoint);
-      const below = scale * distrib.cdf(this.args, leftPoint);
-      const above = scale * (1 - distrib.cdf(this.args, rightPoint));
+      const L = distrib.pdf(this.args_, leftPoint);
+      const R = distrib.pdf(this.args_, rightPoint);
+      const below = scale * distrib.cdf(this.args_, leftPoint);
+      const above = scale * (1 - distrib.cdf(this.args_, rightPoint));
       const outside = below + above;
       const between = scale - outside;
       return {

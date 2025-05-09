@@ -1,13 +1,13 @@
-import { V as VDialog, a as VSwitch, T as Tooltip, _ as __nuxt_component_0$1 } from "./D9ovcV8X.js";
-import { V as VCol, a as VLabel, _ as __nuxt_component_1, b as __nuxt_component_0, c as VTooltip, d as VDivider, e as VRow } from "./BUgl8VVT.js";
-import { u as useDiscreteStore } from "./Br7ZvRxH.js";
-import { i as isNullish, s as sortArr, a as arange, l as linspace, v as vuetifyInputKeydownWrapper, r as round } from "./BTmLGcui.js";
-import { d as defineComponent, t as useHead, i as computed, r as ref, D as reactive, E as watch, v as openBlock, F as createBlock, B as withCtx, A as createVNode, G as unref, H as setBlockTracking, y as createBaseVNode, C as createTextVNode, I as isRef, x as createElementBlock, J as renderList, K as Fragment, z as toDisplayString, L as mergeProps, M as createCommentVNode, N as withDirectives } from "./nAMcUtwR.js";
-import { V as VContainer } from "./ooHpEMx6.js";
-import { V as VIcon } from "./D3F98-YQ.js";
-import { V as VCard, a as VCardTitle, b as VCardText } from "./Bd6oIQyB.js";
-import { V as VBtn, a as VTabs, b as VTab } from "./D2NN67Qk.js";
-import "./BBu8I3H9.js";
+import { V as VDialog, a as VSwitch, T as Tooltip, _ as __nuxt_component_0$1 } from "./BjjwOIE0.js";
+import { V as VCol, a as VLabel, _ as __nuxt_component_1, b as __nuxt_component_0, c as VTooltip, d as VDivider, e as VRow } from "./Aa-mRKeE.js";
+import { u as useDiscreteStore } from "./BOPhn_H-.js";
+import { i as isNullish, s as sortArr, a as arange, l as linspace, v as vuetifyInputKeydownWrapper, r as round } from "./ChaVi1sj.js";
+import { d as defineComponent, t as useHead, i as computed, r as ref, D as reactive, E as watch, v as openBlock, F as createBlock, B as withCtx, A as createVNode, G as unref, H as setBlockTracking, y as createBaseVNode, C as createTextVNode, I as isRef, x as createElementBlock, J as renderList, K as Fragment, z as toDisplayString, L as mergeProps, M as createCommentVNode, N as withDirectives } from "./CLygsIoC.js";
+import { V as VContainer } from "./BfKDNlkB.js";
+import { V as VIcon } from "./iovqoryD.js";
+import { V as VCard, a as VCardTitle, b as VCardText } from "./CDB1RMSL.js";
+import { V as VBtn, a as VTabs, b as VTab } from "./dwKav9SY.js";
+import "./CzYvQyrK.js";
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "discrete-distribution",
   setup(__props) {
@@ -16,10 +16,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     const discreteState = useDiscreteStore();
     const varsTooltip = computed(() => {
-      const distrib = discreteState.distribution;
-      const { min, max } = discreteState.varDomain;
-      const left = isNullish(min) ? "(-∞" : distrib.isInDomain(discreteState.args, min) ? `[${min}` : `(${min}`;
-      const right = isNullish(max) ? "∞)" : distrib.isInDomain(discreteState.args, max) ? `${max}]` : `${max})`;
+      const distrib = discreteState.distribution_;
+      const { min, max } = discreteState.varDomain_;
+      const left = isNullish(min) ? "(-∞" : distrib.isInDomain(discreteState.args_, min) ? `[${min}` : `(${min}`;
+      const right = isNullish(max) ? "∞)" : distrib.isInDomain(discreteState.args_, max) ? `${max}]` : `${max})`;
       return `Domain: ${left}, ${right}`;
     });
     const results = [
@@ -56,20 +56,20 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         value: "outside"
       }
     ];
-    const sortedVars = computed(() => sortArr(discreteState.vars));
+    const sortedVars = computed(() => sortArr(discreteState.vars_));
     const probResults = computed(() => {
-      return discreteState.calcProb(unref(sortedVars));
+      return discreteState.calcProb_(unref(sortedVars));
     });
-    const cdfSuffix = computed(() => discreteState.calc.toPercentage ? "%" : void 0);
+    const cdfSuffix = computed(() => discreteState.calc_.toPercentage_ ? "%" : void 0);
     const chartData = computed(() => {
-      const { chart: { points: points2, extended } } = discreteState;
+      const { chart_: { points_, extended_ } } = discreteState;
       const [L, R] = sortedVars.value;
-      const ratio = extended / 200;
+      const ratio = extended_ / 200;
       const extendedWidth = Math.ceil((R - L) * ratio);
-      const xLabels = R - L + 1 + 2 * extendedWidth <= points2 || points2 === 0 ? arange(L - extendedWidth, R + extendedWidth, 1, round) : linspace(L - extendedWidth, R + extendedWidth, points2, round);
+      const xLabels = R - L + 1 + 2 * extendedWidth <= points_ || points_ === 0 ? arange(L - extendedWidth, R + extendedWidth, 1, round) : linspace(L - extendedWidth, R + extendedWidth, points_, round);
       const pmf = Array(R - L + 1 + 2 * extendedWidth);
       for (let i = 0; i < pmf.length; i++) {
-        pmf[i] = discreteState.pdf(xLabels[i]);
+        pmf[i] = discreteState.pdf_(xLabels[i]);
       }
       const yData = [
         {
@@ -98,11 +98,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     );
     const extendedRatio = computed({
       get() {
-        return discreteState.chart.extended;
+        return discreteState.chart_.extended_;
       },
       set(val) {
         if (!isNaN(val))
-          discreteState.chart.extended = val;
+          discreteState.chart_.extended_ = val;
       }
     });
     const extendedRatioKeydown = vuetifyInputKeydownWrapper(
@@ -113,11 +113,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     );
     const points = computed({
       get() {
-        return discreteState.chart.points;
+        return discreteState.chart_.points_;
       },
       set(val) {
         if (!isNaN(val))
-          discreteState.chart.points = val;
+          discreteState.chart_.points_ = val;
       }
     });
     const pointsKeydown = vuetifyInputKeydownWrapper(
@@ -128,11 +128,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     );
     const place = computed({
       get() {
-        return discreteState.calc.place;
+        return discreteState.calc_.place_;
       },
       set(val) {
         if (!isNaN(val) && Number.isInteger(val))
-          discreteState.calc.place = val;
+          discreteState.calc_.place_ = val;
       }
     });
     const chartGrid = ref(true);
@@ -300,8 +300,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                                 }, 8, ["model-value", "onKeydown"])
                               ], 64)) : unref(settingsTab) === "calc" ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
                                 createVNode(VSwitch, {
-                                  modelValue: unref(discreteState).calc.toPercentage,
-                                  "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(discreteState).calc.toPercentage = $event)
+                                  modelValue: unref(discreteState).calc_.toPercentage_,
+                                  "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(discreteState).calc_.toPercentage_ = $event)
                                 }, {
                                   prepend: withCtx(({ id }) => [
                                     createVNode(VLabel, {
@@ -382,12 +382,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   }, null, 512), [
                     [Tooltip, "最大、最小值將自動調整", "bottom"]
                   ])).cacheIndex = 10, setBlockTracking(1), _cache[10]),
-                  (openBlock(true), createElementBlock(Fragment, null, renderList(unref(discreteState).paramRanges, (param) => {
+                  (openBlock(true), createElementBlock(Fragment, null, renderList(unref(discreteState).paramRanges_, (param) => {
                     return openBlock(), createBlock(__nuxt_component_1, {
                       key: param.name,
                       param,
-                      "model-value": unref(discreteState).args[param.name],
-                      "onUpdate:modelValue": ($event) => unref(discreteState).setArg(param.name, +$event)
+                      "model-value": unref(discreteState).args_[param.name],
+                      "onUpdate:modelValue": ($event) => unref(discreteState).setArg_(param.name, +$event)
                     }, null, 8, ["param", "model-value", "onUpdate:modelValue"]);
                   }), 128)),
                   createVNode(VDivider, { class: "my-3" }),
@@ -400,15 +400,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   ]),
                   createVNode(__nuxt_component_1, {
                     label: "p1=",
-                    param: unref(discreteState).varDomain,
-                    "model-value": unref(discreteState).vars[0],
-                    "onUpdate:modelValue": _cache[11] || (_cache[11] = ($event) => unref(discreteState).setVars(0, $event))
+                    param: unref(discreteState).varDomain_,
+                    "model-value": unref(discreteState).vars_[0],
+                    "onUpdate:modelValue": _cache[11] || (_cache[11] = ($event) => unref(discreteState).setVars_(0, $event))
                   }, null, 8, ["param", "model-value"]),
                   createVNode(__nuxt_component_1, {
                     label: "p2=",
-                    param: unref(discreteState).varDomain,
-                    "model-value": unref(discreteState).vars[1],
-                    "onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => unref(discreteState).setVars(1, $event))
+                    param: unref(discreteState).varDomain_,
+                    "model-value": unref(discreteState).vars_[1],
+                    "onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => unref(discreteState).setVars_(1, $event))
                   }, null, 8, ["param", "model-value"])
                 ]),
                 _: 1

@@ -1,5 +1,5 @@
-import { P as genericComponent, a$ as TransitionGroup, a5 as Transition, h, O as propsFactory, b0 as camelize, X as shallowRef, o as onMounted, i as computed, aE as readonly, am as getCurrentInstance, V as getUid, ab as provide, ag as inject, ae as toRef, e as onBeforeUnmount, E as watch, D as reactive, Q as useProxiedModel, b1 as onUpdated, aa as deepEqual, ah as wrapInArray, b2 as findChildrenWithProvide, G as unref, a9 as IconValue, a7 as makeComponentProps, b3 as makeDisplayProps, ar as useRtl, aC as useDisplay, aM as useResizeObserver, b4 as useGoTo, R as IN_BROWSER, T as useRender, A as createVNode, U as focusableChildren, aD as toRaw, r as ref, a6 as EventProp, a8 as makeThemeProps, aq as provideTheme, b5 as deprecate, N as withDirectives, af as resolveDirective, K as Fragment, L as mergeProps } from "./nAMcUtwR.js";
-import { h as makeTagProps, V as VIcon, G as createSimpleFunctional, j as makeBorderProps, m as makeDensityProps, f as makeDimensionProps, k as makeElevationProps, l as makeRoundedProps, n as makeRouterProps, i as makeVariantProps, R as Ripple, v as useLink, p as useBorder, q as useVariant, b as useDensity, g as useDimension, r as useElevation, s as useRounded, w as genOverlays, x as VAvatar, a as VDefaultsProvider } from "./D3F98-YQ.js";
+import { P as genericComponent, a$ as TransitionGroup, a5 as Transition, h, O as propsFactory, b0 as camelize, X as shallowRef, o as onMounted, i as computed, aE as readonly, am as getCurrentInstance, V as getUid, ab as provide, ag as inject, ae as toRef, e as onBeforeUnmount, E as watch, D as reactive, Q as useProxiedModel, b1 as onUpdated, aa as deepEqual, ah as wrapInArray, b2 as findChildrenWithProvide, G as unref, a9 as IconValue, a7 as makeComponentProps, b3 as makeDisplayProps, ar as useRtl, aC as useDisplay, aM as useResizeObserver, b4 as useGoTo, R as IN_BROWSER, T as useRender, A as createVNode, U as focusableChildren, aD as toRaw, r as ref, a6 as EventProp, a8 as makeThemeProps, aq as provideTheme, b5 as deprecate, N as withDirectives, af as resolveDirective, K as Fragment, L as mergeProps } from "./CLygsIoC.js";
+import { h as makeTagProps, V as VIcon, G as createSimpleFunctional, j as makeBorderProps, m as makeDensityProps, f as makeDimensionProps, k as makeElevationProps, l as makeRoundedProps, n as makeRouterProps, i as makeVariantProps, R as Ripple, v as useLink, p as useBorder, q as useVariant, b as useDensity, g as useDimension, r as useElevation, s as useRounded, w as genOverlays, x as VAvatar, a as VDefaultsProvider } from "./iovqoryD.js";
 class Box {
   constructor(_ref) {
     let {
@@ -2203,32 +2203,32 @@ const betainc = /* @__PURE__ */ (() => {
   };
 })();
 const storeArgsInitializer = (distributions) => {
-  const args = {};
-  const vars = {};
+  const args_ = {};
+  const vars_ = {};
   for (let i = 0; i < distributions.length; i++) {
     const distribObj = distributions[i][1];
-    args[i] = distribObj.params.reduce((prev, param) => {
+    args_[i] = distribObj.params.reduce((prev, param) => {
       prev[param.name] = param.default ?? (typeof param.min === "number" ? param.min : 0);
       return prev;
     }, {});
-    const domain = distribObj.domain(args[i]);
-    if (distribObj.isInDomain(args[i], -1) && distribObj.isInDomain(args[i], 1))
-      vars[i] = [-1, 1];
+    const domain = distribObj.domain(args_[i]);
+    if (distribObj.isInDomain(args_[i], -1) && distribObj.isInDomain(args_[i], 1))
+      vars_[i] = [-1, 1];
     else if (!isNullish(domain.min) && !isNullish(domain.max))
-      vars[i] = [domain.min, domain.max];
-    else if (distribObj.isInDomain(args[i], 0) && distribObj.isInDomain(args[i], 1))
-      vars[i] = [0, 1];
+      vars_[i] = [domain.min, domain.max];
+    else if (distribObj.isInDomain(args_[i], 0) && distribObj.isInDomain(args_[i], 1))
+      vars_[i] = [0, 1];
     else if (!isNullish(domain.min)) {
-      vars[i] = [domain.min, domain.min + 1];
+      vars_[i] = [domain.min, domain.min + 1];
     } else if (!isNullish(domain.max)) {
-      vars[i] = [domain.max - 1, domain.max];
+      vars_[i] = [domain.max - 1, domain.max];
     } else {
-      vars[i] = [-1, 1];
+      vars_[i] = [-1, 1];
     }
   }
   return {
-    args,
-    vars
+    args_,
+    vars_
   };
 };
 export {

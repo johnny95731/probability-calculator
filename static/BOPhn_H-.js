@@ -1,5 +1,5 @@
-import { a1 as defineStore } from "./nAMcUtwR.js";
-import { X as binomialCoeff, Q as betainc, c as clip, Y as sum, U as storeArgsInitializer, W as PLACE, r as round } from "./BTmLGcui.js";
+import { a1 as defineStore } from "./CLygsIoC.js";
+import { X as binomialCoeff, Q as betainc, c as clip, Y as sum, U as storeArgsInitializer, W as PLACE, r as round } from "./ChaVi1sj.js";
 const Bernoulli = {
   params: [
     {
@@ -296,105 +296,97 @@ const NegativeHypergeometric = {
     return r * (N + 1) * K / ((N - K + 1) * (N - K + 2)) * (1 - r / (N - K + 1));
   }
 };
-const Discrete = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  Bernoulli,
-  Binomial,
-  Geometric,
-  Hypergeometric,
-  NegativeHypergeometric,
-  Uniform
-}, Symbol.toStringTag, { value: "Module" }));
-const discreteNames = [
-  "Bernoulli",
-  "Binomial",
-  "Geometric",
-  "Hypergeometric",
-  "NegativeHypergeometric",
-  "Uniform"
+const discDistribs = [
+  ["Bernoulli", Bernoulli],
+  ["Binomial", Binomial],
+  ["Geometric", Geometric],
+  ["Hypergeometric", Hypergeometric],
+  ["NegativeHypergeometric", NegativeHypergeometric],
+  ["Uniform", Uniform]
 ];
 const useDiscreteStore = defineStore("discrete", {
   state: () => {
-    const { args, vars } = storeArgsInitializer(Discrete);
+    const { args_, vars_ } = storeArgsInitializer(discDistribs);
     return {
-      current: discreteNames[0],
-      __args: args,
-      __vars: vars,
-      calc: {
-        place: PLACE,
-        toPercentage: true
+      _currentIdx: 0,
+      _args: args_,
+      _vars: vars_,
+      calc_: {
+        place_: PLACE,
+        toPercentage_: true
       },
-      chart: {
-        points: 200,
-        extended: 10
+      chart_: {
+        points_: 200,
+        extended_: 10
       }
     };
   },
   getters: {
-    paramRanges() {
-      return this.distribution.params.map(({ name, min, max, step }) => {
+    paramRanges_() {
+      return this.distribution_.params.map(({ name, min, max, step }) => {
         return {
           name,
-          min: typeof min === "number" ? min : min == null ? void 0 : min(this.args),
-          max: typeof max === "number" ? max : max == null ? void 0 : max(this.args),
+          min: typeof min === "number" ? min : min == null ? void 0 : min(this.args_),
+          max: typeof max === "number" ? max : max == null ? void 0 : max(this.args_),
           step
         };
       });
     },
-    varDomain() {
-      return this.distribution.domain(this.args);
+    varDomain_() {
+      return this.distribution_.domain(this.args_);
     },
-    args() {
-      return this.__args[this.current];
+    args_() {
+      return this._args[this._currentIdx];
     },
-    vars() {
-      return this.__vars[this.current];
+    vars_() {
+      return this._vars[this._currentIdx];
     },
-    distribution() {
-      return Discrete[this.current];
+    distribution_() {
+      return discDistribs[this._currentIdx][1];
     }
   },
   actions: {
-    setCurrent(val) {
-      this.current = discreteNames.includes(val) ? val : discreteNames[0];
+    setCurrent_(val) {
+      this._currentIdx = val;
     },
-    setArg(name, val) {
+    setArg_(name, val) {
       if (!isNaN(+val))
-        this.args[name] = +val;
+        this.args_[name] = +val;
     },
-    setVars(idx, val) {
+    setVars_(idx, val) {
       if (!isNaN(+val))
-        this.vars[idx] = +val;
+        this.vars_[idx] = +val;
     },
-    pdf(x) {
-      const { calc: { place } } = this;
-      return round(this.distribution.pdf(this.args, x), place);
+    pdf_(x) {
+      const { calc_: { place_ } } = this;
+      return round(this.distribution_.pdf(this.args_, x), place_);
     },
-    calcProb(vars) {
-      const { calc: { place, toPercentage } } = this;
-      const distrib = this.distribution;
+    calcProb_(vars) {
+      const { calc_: { place_, toPercentage_ } } = this;
+      const distrib = this.distribution_;
       const leftPoint = Math.min(...vars);
       const rightPoint = Math.max(...vars);
-      const scale = toPercentage ? 100 : 1;
-      const L = scale * distrib.pdf(this.args, leftPoint), R = scale * distrib.pdf(this.args, rightPoint);
-      const below = scale * distrib.cdf(this.args, leftPoint);
-      const above = scale * (1 - distrib.cdf(this.args, rightPoint - 1));
+      const scale = toPercentage_ ? 100 : 1;
+      const L = scale * distrib.pdf(this.args_, leftPoint);
+      const R = scale * distrib.pdf(this.args_, rightPoint);
+      const below = scale * distrib.cdf(this.args_, leftPoint);
+      const above = scale * (1 - distrib.cdf(this.args_, rightPoint - 1));
       const outside = below + above;
       const between = scale - outside + L + R;
       return {
-        left: round(L, place),
-        right: round(R, place),
-        below: round(below, place),
-        above: round(above, place),
-        belowExcl: round(below - L, place),
-        aboveExcl: round(above - R, place),
-        between: round(between, place),
-        outside: round(outside, place)
+        left: round(L, place_),
+        right: round(R, place_),
+        below: round(below, place_),
+        above: round(above, place_),
+        belowExcl: round(below - L, place_),
+        aboveExcl: round(above - R, place_),
+        between: round(between, place_),
+        outside: round(outside, place_)
       };
     }
   }
 });
 export {
-  discreteNames as d,
+  discDistribs as d,
   useDiscreteStore as u
 };

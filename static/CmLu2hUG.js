@@ -1,12 +1,12 @@
-import { v as openBlock, x as createElementBlock, a0 as createStaticVNode, a1 as defineStore, d as defineComponent, Y as renderSlot, M as createCommentVNode, y as createBaseVNode, K as Fragment, J as renderList, C as createTextVNode, z as toDisplayString, i as computed, F as createBlock, B as withCtx, A as createVNode, G as unref, H as setBlockTracking, t as useHead, N as withDirectives, a2 as vShow } from "./nAMcUtwR.js";
+import { v as openBlock, x as createElementBlock, a0 as createStaticVNode, a1 as defineStore, d as defineComponent, Y as renderSlot, M as createCommentVNode, y as createBaseVNode, K as Fragment, J as renderList, C as createTextVNode, z as toDisplayString, i as computed, F as createBlock, B as withCtx, A as createVNode, G as unref, H as setBlockTracking, t as useHead, N as withDirectives, a2 as vShow } from "./CLygsIoC.js";
 import { _ as _export_sfc } from "./1tPrXgE0.js";
-import { V as VCol, d as VDivider, e as VRow, b as __nuxt_component_0$1, _ as __nuxt_component_1 } from "./BUgl8VVT.js";
-import { c as clip } from "./BTmLGcui.js";
-import { u as useLayoutTabsStore } from "./DtjBwk2o.js";
-import { V as VContainer } from "./ooHpEMx6.js";
-import "./D3F98-YQ.js";
-import "./B6xficXq.js";
-import "./Br7ZvRxH.js";
+import { V as VCol, d as VDivider, e as VRow, b as __nuxt_component_0$1, _ as __nuxt_component_1 } from "./Aa-mRKeE.js";
+import { c as clip } from "./ChaVi1sj.js";
+import { u as useLayoutTabsStore } from "./J586zhkH.js";
+import { V as VContainer } from "./BfKDNlkB.js";
+import "./iovqoryD.js";
+import "./D7h6Q_jA.js";
+import "./BOPhn_H-.js";
 import "./CUPcO2LI.js";
 const _sfc_main$5 = {};
 const _hoisted_1$3 = {
@@ -819,7 +819,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       title: "Probability Calculator - Event Probability"
     });
     const layoutTabState = useLayoutTabsStore();
-    const currentIdx = computed(() => layoutTabState.extTabIdx);
+    const currentIdx = computed(() => layoutTabState.tabIdx_);
     return (_ctx, _cache) => {
       return openBlock(), createBlock(VContainer, {
         class: "d-flex flex-column h-100 pa-0 bg-white",

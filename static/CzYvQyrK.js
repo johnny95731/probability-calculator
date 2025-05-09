@@ -1,4 +1,4 @@
-import { O as propsFactory, al as getCurrentInstanceName, i as computed } from "./nAMcUtwR.js";
+import { O as propsFactory, al as getCurrentInstanceName, i as computed } from "./CLygsIoC.js";
 const positionValues = ["static", "relative", "fixed", "absolute", "sticky"];
 const makePositionProps = propsFactory({
   position: {

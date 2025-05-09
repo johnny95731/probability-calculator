@@ -1,5 +1,5 @@
 import { _ as _export_sfc } from "./1tPrXgE0.js";
-import { t as useHead, v as openBlock, x as createElementBlock, y as createBaseVNode, z as toDisplayString } from "./nAMcUtwR.js";
+import { t as useHead, v as openBlock, x as createElementBlock, y as createBaseVNode, z as toDisplayString } from "./CLygsIoC.js";
 const _hoisted_1 = { class: "antialiased bg-white dark:bg-black dark:text-white font-sans grid min-h-screen overflow-hidden place-content-center text-black" };
 const _hoisted_2 = { class: "max-w-520px text-center" };
 const _hoisted_3 = ["textContent"];
