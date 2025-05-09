@@ -1,10 +1,1 @@
-const _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-export {
-  _export_sfc as _
-};
+const o=(o,t)=>{const n=o.__vccOpts||o;for(const[o,r]of t)n[o]=r;return n};export{o as _};
