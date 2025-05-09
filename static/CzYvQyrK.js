@@ -1,1 +1,0 @@
-import{O as ee,al as ke,i as _}from"./CLygsIoC.js";const iI=["static","relative","fixed","absolute","sticky"],rd=ee({position:{type:String,validator:i=>iI.includes(i)}},"position");function ld(i){let s=arguments.length>1&&void 0!==arguments[1]?arguments[1]:ke();return{positionClasses:_((()=>i.position?`${s}--${i.position}`:void 0))}}export{rd as m,ld as u};
