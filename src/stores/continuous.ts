@@ -1,94 +1,93 @@
 import { defineStore } from 'pinia';
-import * as Continuous from '~/utils/distributions/continuous';
+import { Beta, ChiSquared, Exponential, F, Gamma, Laplace, LogNormal, Normal, Rayleigh, StudentsT, Uniform, Weibull } from '~/utils/distributions/continuous';
 import { PLACE, round } from 'utils/numeric';
 import { storeArgsInitializer } from 'utils/distributions/common';
-import type { DisplayResult, Range } from 'utils/distributions/common';
-import type { valueof } from 'utils/type-helpers';
+import type { DisplayResult, Distribution, Range } from 'utils/distributions/common';
 
 
-export const continuousNames = [
-  'Beta',
-  'ChiSquared',
-  'Exponential',
-  'F',
-  'Gamma',
-  'Laplace',
-  'LogNormal',
-  'Normal',
-  'Rayleigh',
-  'StudentsT',
-  'Uniform',
-  'Weibull'
+export const contiDistribs = [
+  ['Beta', Beta],
+  ['ChiSquared', ChiSquared],
+  ['Exponential', Exponential],
+  ['F', F],
+  ['Gamma', Gamma],
+  ['Laplace', Laplace],
+  ['LogNormal', LogNormal],
+  ['Normal', Normal],
+  ['Rayleigh', Rayleigh],
+  ['StudentsT', StudentsT],
+  ['Uniform', Uniform],
+  ['Weibull', Weibull]
 ] as const;
 
-export type ContinuousDistributions = typeof continuousNames[number]
+export type ContinuousDistributions = typeof contiDistribs[number][0]
 
 type State = {
   /**
-   * Currently displayed probability distribution.
+   * Index of selected probability distribution.
    */
-  current_: ContinuousDistributions;
+  _idx: number;
   /**
    * Arguments of probability distributions.
    */
-  __args_: Record<ContinuousDistributions, Record<string, number>>;
+  _args: Record<number, Record<string, number>>;
   /**
    * Variables of probability distributions.
    */
-  __vars_: Record<ContinuousDistributions, [number, number]>;
+  _vars: Record<number, [number, number]>;
   /**
    * Calculation settings.
    */
-  calc_: {
+  calc: {
     /**
      * Place value of digit.
      */
-    place_: number;
+    place: number;
     /**
      * Is displaying probabilities in percentage or not.
      */
-    toPercentage_: boolean;
+    percentage: boolean;
   },
   /**
    * Chart settings.
    */
-  chart_: {
+  chart: {
     /**
      * Points of chart.
      */
-    points_: number;
+    points: number;
     /**
      * Extended width from leftPoint and rightPoint that displayed.
      */
-    extended_: number;
+    extended: number;
     /**
      * Place value of digit on labels.
      */
-    place_: number;
+    place: number;
   }
 }
 
 const useContinuousStore = defineStore('continuous', {
   state: (): State => {
-    const {args, vars} = storeArgsInitializer(Continuous, continuousNames);
+    const { args_, vars_ } = storeArgsInitializer(contiDistribs);
     return {
-      current_: continuousNames[0],
-      __args_: args,
-      __vars_: vars,
-      calc_: {
-        place_: PLACE,
-        toPercentage_: true,
+      _idx: 0,
+      _args: args_,
+      _vars: vars_,
+      calc: {
+        place: PLACE,
+        percentage: true,
       },
-      chart_: {
-        points_: 200,
-        extended_: 10,
-        place_: 3,
+      chart: {
+        points: 200,
+        extended: 10,
+        place: 3,
       }
     };
   },
   getters: {
     paramRanges(): (Range & {name: string})[] {
-      return this.distribution.params.map(({name, min, max, step}) => {
+      return this.distrib.params.map(({name, min, max, step}) => {
         return {
           name,
           min: typeof min === 'number' ? min : min?.(this.args),
@@ -98,22 +97,21 @@ const useContinuousStore = defineStore('continuous', {
       });
     },
     varDomain(): Range {
-      return this.distribution.domain(this.args);
+      return this.distrib.domain(this.args);
     },
     args(): Record<string, number> {
-      return this.__args_[this.current_];
+      return this._args[this._idx];
     },
     vars(): number[] {
-      return this.__vars_[this.current_];
+      return this._vars[this._idx];
     },
-    distribution(): valueof<typeof Continuous>{
-      return Continuous[this.current_];
+    distrib(): Distribution{
+      return contiDistribs[this._idx][1];
     }
   },
   actions: {
-    setCurrent(val: string) {
-      // @ts-expect-error
-      this.current_ = continuousNames.includes(val) ? val : continuousNames[0];
+    setCurrent(val: number) {
+      this._idx = val;
     },
     setArg(name: string, val: number | string) {
       if (!isNaN(+val))
@@ -124,30 +122,30 @@ const useContinuousStore = defineStore('continuous', {
         this.vars[idx] = +val;
     },
     pdf(x: number): number {
-      const { calc_: {place_} } = this;
-      return round(this.distribution.pdf(this.args, x), place_);
+      const { calc: { place: place_ } } = this;
+      return round(this.distrib.pdf(this.args, x), place_);
     },
     calcProb(vars: number[]): DisplayResult<'continuous'> {
-      const { calc_: {place_, toPercentage_} } = this;
-      const distrib = this.distribution;
+      const { calc: { place, percentage } } = this;
+      const distrib = this.distrib;
       // Find boundaries.
       const leftPoint = Math.min(...vars);
       const rightPoint = Math.max(...vars);
-      const scale = toPercentage_ ? 100 : 1;
+      const scale = percentage ? 100 : 1;
 
-      const L = distrib.pdf(this.args, leftPoint),
-        R = distrib.pdf(this.args, rightPoint);
+      const L = distrib.pdf(this.args, leftPoint);
+      const R = distrib.pdf(this.args, rightPoint);
       const below = scale * distrib.cdf(this.args, leftPoint);
       const above = scale * (1 - distrib.cdf(this.args, rightPoint));
       const outside = below + above;
       const between = scale - outside;
       return {
-        left: round(L, place_),
-        right: round(R, place_),
-        below: round(below, place_),
-        above: round(above, place_),
-        between: round(between, place_),
-        outside: round(outside, place_),
+        left: round(L, place),
+        right: round(R, place),
+        below: round(below, place),
+        above: round(above, place),
+        between: round(between, place),
+        outside: round(outside, place),
       };
     }
   }

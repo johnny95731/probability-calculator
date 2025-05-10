@@ -1,83 +1,82 @@
 import { defineStore } from 'pinia';
-import * as Discrete from 'utils/distributions/discrete';
+import { Bernoulli, Binomial, Geometric, Hypergeometric, NegativeHypergeometric, Uniform } from 'utils/distributions/discrete';
 import { PLACE, round } from 'utils/numeric';
 import { storeArgsInitializer } from 'utils/distributions/common';
-import type { DisplayResult, Range } from 'utils/distributions/common';
-import type { valueof } from 'utils/type-helpers';
+import type { DisplayResult, Distribution, Range } from 'utils/distributions/common';
 
 
-export const discreteNames = [
-  'Bernoulli',
-  'Binomial',
-  'Geometric',
-  'Hypergeometric',
-  'NegativeHypergeometric',
-  'Uniform'
+export const discDistribs = [
+  ['Bernoulli', Bernoulli],
+  ['Binomial', Binomial],
+  ['Geometric', Geometric],
+  ['Hypergeometric', Hypergeometric],
+  ['NegativeHypergeometric', NegativeHypergeometric],
+  ['Uniform', Uniform]
 ] as const;
 
-export type DiscreteDistributions = typeof discreteNames[number]
+export type DiscreteDistributions = typeof discDistribs[number]
 
 type State = {
   /**
    * Currently displayed probability distribution.
    */
-  current_: DiscreteDistributions;
+  _idx: number;
   /**
    * Arguments of probability distributions.
    */
-  __args_: Record<DiscreteDistributions, Record<string, number>>;
+  _args: Record<number, Record<string, number>>;
   /**
    * Variables of probability distributions.
    */
-  __vars_: Record<DiscreteDistributions, [number, number]>;
+  _vars: Record<number, [number, number]>;
   /**
    * Calculation settings.
    */
-  calc_: {
+  calc: {
     /**
      * Place value of digit.
      */
-    place_: number;
+    place: number;
     /**
      * Is displaying probabilities in percentage or not.
      */
-    toPercentage_: boolean;
+    percentage: boolean;
   },
   /**
    * Chart settings.
    */
-  chart_: {
+  chart: {
     /**
      * Maximum points of chart.
      */
-    points_: number;
+    points: number;
     /**
      * Extended width from leftPoint and rightPoint that displayed.
      */
-    extended_: number;
+    extended: number;
   }
 }
 
 const useDiscreteStore = defineStore('discrete', {
   state: (): State => {
-    const {args, vars} = storeArgsInitializer(Discrete, discreteNames);
+    const { args_, vars_ } = storeArgsInitializer(discDistribs);
     return {
-      current_: discreteNames[0],
-      __args_: args,
-      __vars_: vars,
-      calc_: {
-        place_: PLACE,
-        toPercentage_: true,
+      _idx: 0,
+      _args: args_,
+      _vars: vars_,
+      calc: {
+        place: PLACE,
+        percentage: true,
       },
-      chart_: {
-        points_: 200,
-        extended_: 10,
+      chart: {
+        points: 200,
+        extended: 10,
       }
     };
   },
   getters: {
     paramRanges(): (Range & {name: string})[] {
-      return this.distribution.params.map(({name, min, max, step}) => {
+      return this.distrib.params.map(({name, min, max, step}) => {
         return {
           name,
           min: typeof min === 'number' ? min : min?.(this.args),
@@ -87,22 +86,21 @@ const useDiscreteStore = defineStore('discrete', {
       });
     },
     varDomain(): Range {
-      return this.distribution.domain(this.args);
+      return this.distrib.domain(this.args);
     },
     args(): Record<string, number> {
-      return this.__args_[this.current_];
+      return this._args[this._idx];
     },
     vars(): number[] {
-      return this.__vars_[this.current_];
+      return this._vars[this._idx];
     },
-    distribution(): valueof<typeof Discrete>{
-      return Discrete[this.current_];
+    distrib(): Distribution{
+      return discDistribs[this._idx][1];
     }
   },
   actions: {
-    setCurrent(val: string) {
-      // @ts-expect-error
-      this.current_ = discreteNames.includes(val) ? val : discreteNames[0];
+    setCurrent(val: number) {
+      this._idx = val;
     },
     setArg(name: string, val: number) {
       if (!isNaN(+val))
@@ -113,32 +111,32 @@ const useDiscreteStore = defineStore('discrete', {
         this.vars[idx] = +val;
     },
     pdf(x: number): number {
-      const { calc_: {place_} } = this;
-      return round(this.distribution.pdf(this.args, x), place_);
+      const { calc: { place: place_ } } = this;
+      return round(this.distrib.pdf(this.args, x), place_);
     },
     calcProb(vars: number[]): DisplayResult<'discrete'> {
-      const { calc_: {place_, toPercentage_} } = this;
-      const distrib = this.distribution;
+      const { calc: { place, percentage } } = this;
+      const distrib = this.distrib;
       // Find boundaries.
       const leftPoint = Math.min(...vars);
       const rightPoint = Math.max(...vars);
-      const scale = toPercentage_ ? 100 : 1;
+      const scale = percentage ? 100 : 1;
 
-      const L = scale * distrib.pdf(this.args, leftPoint),
-        R = scale * distrib.pdf(this.args, rightPoint);
+      const L = scale * distrib.pdf(this.args, leftPoint);
+      const R = scale * distrib.pdf(this.args, rightPoint);
       const below = scale * distrib.cdf(this.args, leftPoint);
       const above = scale * (1 - distrib.cdf(this.args, rightPoint-1));
       const outside = below + above;
       const between = scale - outside + L + R;
       return {
-        left: round(L, place_),
-        right: round(R, place_),
-        below: round(below, place_),
-        above: round(above, place_),
-        belowExcl: round(below - L, place_),
-        aboveExcl: round(above - R, place_),
-        between: round(between, place_),
-        outside: round(outside, place_),
+        left: round(L, place),
+        right: round(R, place),
+        below: round(below, place),
+        above: round(above, place),
+        belowExcl: round(below - L, place),
+        aboveExcl: round(above - R, place),
+        between: round(between, place),
+        outside: round(outside, place),
       };
     }
   }

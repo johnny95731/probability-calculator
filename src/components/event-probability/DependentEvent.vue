@@ -20,7 +20,7 @@ const targetItems = targets.map(target => ({
 const argOptionItems = targets.reduce((prev, target) => {
   prev[target] = optionsOfTargets[target]
     .map((option, i) => ({
-      title: option.keys_.map(key => `P(${rEventParamNameBiMap[key]})`).join(', '),
+      title: option.keys.map(key => `P(${rEventParamNameBiMap[key]})`).join(', '),
       value: i
     }));
   return prev;

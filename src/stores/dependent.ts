@@ -172,7 +172,7 @@ const useDependentStore = defineStore('dependent', {
     for (const target of targets) {
       state[target] = [];
       optionsOfTargets[target].forEach((option, i) => {
-        state[target][i] = option.keys_.reduce((prev, key) => {
+        state[target][i] = option.keys.reduce((prev, key) => {
           prev[key] = 0;
           return prev;
         }, {} as REventArgs);
@@ -185,13 +185,13 @@ const useDependentStore = defineStore('dependent', {
       return optionsOfTargets[this.target][this.optionIdx];
     },
     params(): {key: REventParamKey, label: REventParamLabel}[] {
-      return this.optionItem.keys_.map(key => ({
+      return this.optionItem.keys.map(key => ({
         key,
         label: rEventParamNameBiMap[key],
       }));
     },
-    formula(): ReturnType<REventOption['formula_']> {
-      return this.optionItem.formula_(this.args);
+    formula(): ReturnType<REventOption['formula']> {
+      return this.optionItem.formula(this.args);
     },
     /**
      * Current value of arguments
@@ -209,7 +209,7 @@ const useDependentStore = defineStore('dependent', {
         `計算結果 P(${this.target})=${this.result} 無效。`;
       return [
         resultMessage,
-        ...this.optionItem.validator_.map(v => v(this.args))
+        ...this.optionItem.validator.map(v => v(this.args))
       ].join('\n');
     }
   },

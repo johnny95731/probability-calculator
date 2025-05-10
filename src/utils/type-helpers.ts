@@ -1,6 +1,4 @@
 
-export type valueof<T> = T[keyof T]
-
 export type MaybeArray<T> = T | T[];
 
 /**

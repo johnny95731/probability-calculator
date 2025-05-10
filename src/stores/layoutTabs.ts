@@ -1,72 +1,65 @@
-import useContinuousStore, { continuousNames } from 'stores/continuous';
-import useDiscreteStore, { discreteNames } from 'stores/discrete';
-import { sepByCap } from '~/utils/helpers';
+import useContinuousStore, { contiDistribs } from 'stores/continuous';
+import useDiscreteStore, { discDistribs } from 'stores/discrete';
+import { isNullish, sepByCap } from '~/utils/helpers';
 import { pages } from '~/utils/route';
 
 export type TabItem = {
-  value: string,
+  value: number,
   text: string,
   disabled?: boolean,
 }
 
 type State = {
-  /**
-   * Value of header's extension tab.
-   */
-  extTabValue_: string | null,
-  extTabIdx_: number,
-  extTabs_: TabItem[],
+  tabIdx: number,
+  extTabs: TabItem[],
 }
 
 const useLayoutTabsStore =  defineStore('layoutTabs', {
   state: (): State => ({
-    extTabs_: [],
-    extTabValue_: null,
-    extTabIdx_: 0,
+    extTabs: [],
+    tabIdx: 0,
   }),
   actions: {
-    setExtTabs_(route: string) {
+    updateTabs(route: string) {
       const idx = pages.findIndex(({path}) => route === path);
       let extTabs: TabItem[] = [];
       if (idx === 1) {
-        extTabs = discreteNames.map((name) => ({
-          value: name,
+        extTabs = discDistribs.map(([name], i) => ({
+          value: i,
           text: sepByCap(name),
         }));
       } else if (idx === 2) {
-        extTabs = continuousNames.map((name) => ({
-          value: name,
+        extTabs = contiDistribs.map(([name], i) => ({
+          value: i,
           text: name === 'StudentsT' ? 'Student\'s t' : sepByCap(name),
         }));
       } else if (idx === 3) {
         extTabs = [
           {
-            value: 'independent',
+            value: 0,
             text: '獨立事件(Independent Event)',
           },
           {
-            value: 'dependent',
+            value: 1,
             text: '相依事件(Dependent Event)',
           },
           {
-            value: 'bayes',
+            value: 2,
             text: '貝氏定理(Bayes\' theorem)',
           }
         ] as const;
       }
-      this.extTabs_ = extTabs;
+      this.extTabs = extTabs;
       if (extTabs.length)
-        this.setExtTabValue_(route, extTabs[0].value);
+        this.setExtTab_(route, extTabs[0].value);
+      return extTabs;
     },
-    setExtTabValue_(route: string, val: string) {
-      this.extTabValue_ = val;
-      this.extTabIdx_ = this.extTabs_.findIndex(({value}) => this.extTabValue_ === value);
-      if (val && route === '/discrete-distribution') {
-        const discreteState = useDiscreteStore();
-        discreteState.setCurrent(val);
-      } else if (val && route === '/continuous-distribution') {
-        const continuousState = useContinuousStore();
-        continuousState.setCurrent(val);
+    setExtTab_(route: string, val: number) {
+      this.tabIdx = val;
+      if (!isNullish(val) && route === '/discrete-distribution') {
+        useDiscreteStore().setCurrent(val);
+      } else if (!isNullish(val) && route === '/continuous-distribution') {
+        useContinuousStore().setCurrent(val);
       }
     },
   }

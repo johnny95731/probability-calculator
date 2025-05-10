@@ -7,6 +7,12 @@ const fromSrcDir = (path: string) => {
   return fileURLToPath(new URL(join(srcDir, path), import.meta.url));
 };
 
+const baseURL = (
+  !process.env.LIVE && process.env.NODE_ENV === 'production' ?
+    '/probability-calculator/' :
+    '/'
+);
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-01',
@@ -20,8 +26,8 @@ export default defineNuxtConfig({
   },
 
   app: {
-    baseURL: process.env.NODE_ENV === 'production' ? '/probability-calculator/' : '/',
-    buildAssetsDir: '/static/',
+    baseURL,
+    buildAssetsDir: 'static/',
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',

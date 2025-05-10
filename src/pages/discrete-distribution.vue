@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import ParamInput from '@/components/ParamInput.vue';
 import ParamLabel from '@/components/ParamLabel.vue';
-import type { ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import useDiscreteStore from 'stores/discrete';
-import type { Cummulative } from '~/utils/distributions/common';
 import { isNullish, vuetifyInputKeydownWrapper } from '~/utils/helpers';
 import { arange, linspace, round, sortArr } from '~/utils/numeric';
+import type { ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import type { TabItem } from 'vuetify/lib/components/VTabs/VTabs';
+import type { Cummulative } from '~/utils/distributions/common';
 
 useHead({
   title: 'Probability Calculator - Discrete Probability Distribution',
@@ -14,7 +15,7 @@ useHead({
 const discreteState = useDiscreteStore();
 
 const varsTooltip = computed<string>(() => {
-  const distrib = discreteState.distribution;
+  const distrib = discreteState.distrib;
   const {min, max} = discreteState.varDomain;
   const left = isNullish(min) ? '(-∞' :
     distrib.isInDomain(discreteState.args, min) ?
@@ -68,21 +69,21 @@ const probResults = computed<ReturnType<typeof discreteState.calcProb>>(() => {
   return discreteState.calcProb(unref(sortedVars));
 });
 
-const cdfSuffix = computed(() => discreteState.calc_.toPercentage_ ? '%' : undefined);
+const cdfSuffix = computed(() => discreteState.calc.percentage ? '%' : undefined);
 
 
 const chartData = computed<ChartData>(() => {
-  const { chart_: { points_, extended_ } } = discreteState;
+  const { chart: { points, extended } } = discreteState;
   // x-axis
   const [L, R] = sortedVars.value;
   // 2 for left and right. 100 for percentage to decimal.
-  const ratio = (extended_ / 200);
-  const extended = Math.ceil((R - L) * ratio);
-  const xLabels: number[] = R-L+1 + 2*extended <= points_ || points_ === 0 ?
-    arange(L-extended, R+extended, 1, round) :
-    linspace(L-extended, R+extended, points_, round);
+  const ratio = (extended / 200);
+  const extendedWidth = Math.ceil((R - L) * ratio);
+  const xLabels: number[] = R-L+1 + 2*extendedWidth <= points || points === 0 ?
+    arange(L-extendedWidth, R+extendedWidth, 1, round) :
+    linspace(L-extendedWidth, R+extendedWidth, points, round);
   // y-axis
-  const pmf: number[] = Array(R - L + 1 + 2 * extended);
+  const pmf: number[] = Array(R - L + 1 + 2 * extendedWidth);
   for (let i = 0; i < pmf.length; i++) {
     pmf[i] = discreteState.pdf(xLabels[i]);
   }
@@ -111,7 +112,7 @@ const settingsTabItems = [
     text: '計算',
     value: 'calc'
   },
-] as const;
+] as const satisfies TabItem[];
 const settingsTab = ref<typeof settingsTabItems[number]['value']>(
   settingsTabItems[0].value
 );
@@ -119,11 +120,11 @@ const settingsTab = ref<typeof settingsTabItems[number]['value']>(
 // Arguments in settings dialog
 const extendedRatio = computed({
   get() {
-    return discreteState.chart_.extended_;
+    return discreteState.chart.extended;
   },
   set(val: number) {
     if (!isNaN(val))
-      discreteState.chart_.extended_ = val;
+      discreteState.chart.extended = val;
   }
 });
 const extendedRatioKeydown = vuetifyInputKeydownWrapper(
@@ -132,11 +133,11 @@ const extendedRatioKeydown = vuetifyInputKeydownWrapper(
 
 const points = computed({
   get() {
-    return discreteState.chart_.points_;
+    return discreteState.chart.points;
   },
   set(val: number) {
     if (!isNaN(val))
-      discreteState.chart_.points_ = val;
+      discreteState.chart.points = val;
   }
 });
 const pointsKeydown = vuetifyInputKeydownWrapper(
@@ -145,11 +146,11 @@ const pointsKeydown = vuetifyInputKeydownWrapper(
 
 const place = computed({
   get() {
-    return discreteState.calc_.place_;
+    return discreteState.calc.place;
   },
   set(val: number) {
     if (!isNaN(val) && Number.isInteger(val))
-      discreteState.calc_.place_ = val;
+      discreteState.calc.place = val;
   }
 });
 
@@ -312,7 +313,7 @@ watch(chartGrid, (newVal) => {
 
               <template v-else-if="settingsTab === 'calc'">
                 <VSwitch
-                  v-model="discreteState.calc_.toPercentage_"
+                  v-model="discreteState.calc.percentage"
                 >
                   <template #prepend="{id}">
                     <v-label

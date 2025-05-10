@@ -1,32 +1,24 @@
 <script setup lang="ts">
 import { pages } from 'utils/route';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
 import useLayoutTabsStore from 'stores/layoutTabs';
+import { useDisplay } from 'vuetify';
 import type { TabItem } from 'stores/layoutTabs';
 
-const { mdAndDown } = useDisplay();
-const isMobile = ref(true);
-watch(mdAndDown, (newVal) => {
-  isMobile.value = newVal;
-}, { immediate: true });
+const { mdAndDown: isMobile } = useDisplay();
 
 const layoutTabState = useLayoutTabsStore();
 const extTabs = ref<TabItem[]>([]);
-const tabValue = ref<string>(useRoute().path);
 
 const updateTab = async (to: ReturnType<typeof useRoute>) => {
-  tabValue.value = to.path;
-  layoutTabState.setExtTabs_(to.path);
-  extTabs.value = layoutTabState.extTabs_
-    .map((item) => ({
-      ...item,
-      class: 'text-transform-none'
-    }));
-  // await nextTick();
-  // layoutTabState.setExtTabValue_(to.path);
+  extTabs.value =
+    layoutTabState.updateTabs(to.path)
+      .map((item) => ({
+        class: 'text-transform-none',
+        ...item,
+      }));
 };
-const router = useRouter();
-router.beforeEach(updateTab);
+
+useRouter().beforeEach(updateTab);
 onMounted(() => updateTab(useRoute()));
 </script>
 
@@ -75,8 +67,8 @@ onMounted(() => updateTab(useRoute()));
         bg-color="primary"
         align-tabs="center"
         :items="extTabs"
-        :model-value="layoutTabState.extTabValue_"
-        @update:model-value="layoutTabState.setExtTabValue_($route.path, $event as string)"
+        :model-value="layoutTabState.tabIdx"
+        @update:model-value="layoutTabState.setExtTab_($route.path, $event as number)"
       />
     </template>
   </v-app-bar>

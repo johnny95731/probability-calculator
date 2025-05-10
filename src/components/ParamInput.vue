@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VSelect, VTextField } from 'vuetify/lib/components/index.mjs';
+import { VSelect, VTextField } from 'vuetify/components';
 import type { Param, Range } from '~/utils/distributions/common';
 
 type Props = {

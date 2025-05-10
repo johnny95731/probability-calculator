@@ -9,7 +9,7 @@ useHead({
 });
 
 const layoutTabState = useLayoutTabsStore();
-const currentIdx = computed(() => layoutTabState.extTabIdx_);
+const currentIdx = computed(() => layoutTabState.tabIdx);
 </script>
 
 <template>

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import ParamInput from '@/components/ParamInput.vue';
-import ParamLabel from '@/components/ParamLabel.vue';
-import useContinuousStore from 'stores/continuous';
+import ParamInput from '~/components/ParamInput.vue';
+import ParamLabel from '~/components/ParamLabel.vue';
 import VChart from '~/components/VChart.vue';
+import useContinuousStore from 'stores/continuous';
 import { isNullish, vuetifyInputKeydownWrapper } from 'utils/helpers';
 import { linspace, round, sortArr } from 'utils/numeric';
 import { defaultLineDataset } from 'utils/chartconfig';
 import type { ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import type { TabItem } from 'vuetify/lib/components/VTabs/VTabs';
 
 useHead({
   title: 'Probability Calculator - Continuous Probability Distribution',
@@ -15,7 +16,7 @@ useHead({
 const continuousState = useContinuousStore();
 
 const varsTooltip = computed<string>(() => {
-  const distrib = continuousState.distribution;
+  const distrib = continuousState.distrib;
   const {min, max} = continuousState.varDomain;
   const left = isNullish(min) ? '(-∞' :
     distrib.isInDomain(continuousState.args, min) ?
@@ -63,41 +64,43 @@ const sortedVars = computed(() => sortArr(continuousState.vars));
 const probResults = computed<ReturnType<typeof continuousState.calcProb>>(() => {
   return continuousState.calcProb(unref(sortedVars));
 });
-const cdfSuffix = computed(() => continuousState.calc_.toPercentage_ ? '%' : undefined);
+const cdfSuffix = computed(() => continuousState.calc.percentage ? '%' : undefined);
 
 const chartData = computed<ChartData>(() => {
-  const { calc_: { place_ }, chart_: { points_, extended_ } } = continuousState;
-  const round_ = (val: number) => round(val, place_);
+  const { calc: { place }, chart: { points, extended } } = continuousState;
+  const round_ = (val: number) => round(val, place);
   // x-axis
   const [L, R] = sortedVars.value;
   // 2 for left and right. 100 for percentage to decimal.
-  const ratio = (extended_ / 200);
-  const extended = (R - L) * ratio;
-  /** Point counts */
-  const counts = {
-    outside_: round(points_ * ratio),
-    between_: points_ - round(points_ * ratio),
-  };
+  const ratio = (extended / 200);
+  const extendedLength = (R - L) * ratio;
+  // Point counts
+  const countsOutside = round(points * ratio);
+  const countsBetween = points - countsOutside;
   const xLabels: number[] = [
-    ...linspace(L-extended, L, counts.outside_, round_),
-    ...linspace(L, R, counts.between_, round_),
-    ...linspace(R, R+extended, counts.outside_, round_),
+    ...linspace(L-extendedLength, L, countsOutside, round_),
+    ...linspace(L, R, countsBetween, round_),
+    ...linspace(R, R+extendedLength, countsOutside, round_),
   ];
   // y-axis
-  const below: number[] = Array(counts.outside_);
-  const between: number[] = Array(counts.between_ + counts.outside_ );
-  const above: number[] = Array(counts.between_ + 2 * counts.outside_);
-  if (counts.outside_ > 0) {
+  const below: number[] = Array(countsOutside);
+  const between: number[] = Array(points);
+  const above: number[] = Array(countsBetween + 2 * countsOutside);
+  if (countsOutside > 0) {
     between.length -= 1;
     xLabels.splice(between.length, 1);
     xLabels.splice(below.length, 1);
   }
-  for (let i = 0, j = between.length-1; i < below.length; i++, j++) {
+  let i = 0,
+    j = between.length-1,
+    k = below.length-1;
+  for (; i < countsOutside; i++, j++, k++) {
     below[i] = continuousState.pdf(xLabels[i]);
     above[j] = continuousState.pdf(xLabels[j]);
+    between[k] = continuousState.pdf(xLabels[k]);
   }
-  for (let i = below.length-1; i < between.length; i++) {
-    between[i] = continuousState.pdf(xLabels[i]);
+  for (; k < points; k++) {
+    between[k] = continuousState.pdf(xLabels[k]);
   }
 
   const yData = [
@@ -140,7 +143,7 @@ const settingsTabItems = [
     text: '計算',
     value: 'calc'
   },
-] as const;
+] as const satisfies TabItem[];
 const settingsTab = ref<typeof settingsTabItems[number]['value']>(
   settingsTabItems[0].value
 );
@@ -148,11 +151,11 @@ const settingsTab = ref<typeof settingsTabItems[number]['value']>(
 // Arguments in settings dialog
 const extendedRatio = computed({
   get() {
-    return continuousState.chart_.extended_;
+    return continuousState.chart.extended;
   },
   set(val: number) {
     if (!isNaN(val))
-      continuousState.chart_.extended_ = val;
+      continuousState.chart.extended = val;
   }
 });
 const extendedRatioKeydown = vuetifyInputKeydownWrapper(
@@ -161,11 +164,11 @@ const extendedRatioKeydown = vuetifyInputKeydownWrapper(
 
 const points = computed({
   get() {
-    return continuousState.chart_.points_;
+    return continuousState.chart.points;
   },
   set(val: number) {
     if (!isNaN(val))
-      continuousState.chart_.points_ = val;
+      continuousState.chart.points = val;
   }
 });
 const pointsKeydown = vuetifyInputKeydownWrapper(
@@ -174,21 +177,21 @@ const pointsKeydown = vuetifyInputKeydownWrapper(
 
 const chartPlace = computed({
   get() {
-    return continuousState.chart_.place_;
+    return continuousState.chart.place;
   },
   set(val: number) {
     if (!isNaN(val) && Number.isInteger(val))
-      continuousState.chart_.place_ = val;
+      continuousState.chart.place = val;
   }
 });
 
 const place = computed({
   get() {
-    return continuousState.calc_.place_;
+    return continuousState.calc.place;
   },
   set(val: number) {
     if (!isNaN(val) && Number.isInteger(val))
-      continuousState.calc_.place_ = val;
+      continuousState.calc.place = val;
   }
 });
 
@@ -390,7 +393,7 @@ watch(chartPlace, (newVal) => {
 
               <template v-else-if="settingsTab === 'calc'">
                 <VSwitch
-                  v-model="continuousState.calc_.toPercentage_"
+                  v-model="continuousState.calc.percentage"
                 >
                   <template #prepend="{id}">
                     <v-label

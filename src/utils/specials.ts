@@ -197,7 +197,7 @@ export const betainc = (() => {
     if (x === 1) return regularized ? 1 : beta(a, b);
     // Calculate continued fraction
     let complement = false,
-      beta_ = regularized ? beta(a, b) : 1,
+      scale = regularized ? beta(a, b) : 1,
       numeratorM2 = 0, // A_{idx-2}
       numeratorM1 = 1, // A_{idx-1}, A_0 = b_0 = 1
       denominatorM2 =  1, // B_{idx-2}
@@ -210,11 +210,11 @@ export const betainc = (() => {
       result = Infinity; // x_n = A_n / B_n
     if (x > (a+1) / (a+b+2)) { // Compute directly may be slow.
       complement = true;
-      if (!regularized) beta_ = beta(a, b);
-      x = 1-x;
+      if (!regularized) scale = beta(a, b);
+      x = 1 - x;
       [a, b] = [b, a];
     }
-    const factor = x**a * (1-x)**b / a / (regularized ? beta_ : 1);
+    const factor = x**a * (1-x)**b / a / (regularized ? scale : 1);
     do {
       resultM1 = result;
       // calculate new data
@@ -231,7 +231,7 @@ export const betainc = (() => {
       denominatorM1 = denominator;
     } while (Math.abs(result - resultM1) > Math.abs(EPSILON * (result || 1)));
     if (complement)
-      result = (regularized ? 1 : beta_) - result;
+      result = (regularized ? 1 : scale) - result;
     return result;
   };
 })();

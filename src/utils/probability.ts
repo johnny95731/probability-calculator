@@ -68,20 +68,20 @@ export type REventOption = {
   /**
    * Names of parameter.
    */
-  keys_: REventParamKey[],
+  keys: REventParamKey[],
   /**
    * Validator of arguments
    */
-  validator_: Validator[],
+  validator: Validator[],
   /**
    * Formula text with specific argument.
    */
-  formula_: (args: REventArgs) => string[]
+  formula: (args: REventArgs) => string[]
 };
 
 export const createREventOption = (
-  argsNames_: REventOption['keys_'],
-  formula: REventOption['formula_'],
+  argsNames_: REventOption['keys'],
+  formula: REventOption['formula'],
 ): REventOption => {
   const hasUnion = argsNames_.includes('u');
   const hasIntersection = argsNames_.includes('i');
@@ -89,9 +89,9 @@ export const createREventOption = (
   if (hasUnion) validators.push(unionValidator);
   if (hasIntersection) validators.push(intersectionValidator);
   return {
-    keys_: argsNames_,
-    validator_: validators,
-    formula_: formula,
+    keys: argsNames_,
+    validator: validators,
+    formula: formula,
   };
 };
 

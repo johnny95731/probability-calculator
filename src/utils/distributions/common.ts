@@ -106,47 +106,45 @@ export type DisplayResult<T extends 'discrete' | 'continuous'> =
 }
 
 
-export const storeArgsInitializer = <T extends Distribution, F extends readonly string[]>(
-  distributions: Record<F[number], T>,
-  names: F
+export const storeArgsInitializer = <T extends Distribution, F extends string>(
+  distributions: readonly(readonly [F, T])[]
 ) => {
-  const args = {} as Record<F[number], Record<string, number>>;
-  const vars = {} as Record<F[number], [number, number]>;
+  const args_ = {} as Record<number, Record<string, number>>;
+  const vars_ = {} as Record<number, [number, number]>;
 
-  for (let i = 0; i < names.length; i++) {
-    const name = names[i] as F[number];
-    const distribObj = distributions[name];
+  for (let i = 0; i < distributions.length; i++) {
+    const distribObj = distributions[i][1];
 
-    args[name] = distribObj.params
+    args_[i] = distribObj.params
       .reduce((prev, param) => {
         prev[param.name] = param.default ??
                 (typeof param.min ==='number' ? param.min : 0);
         return prev;
       }, {} as Record<string, number>);
 
-    const domain = distribObj.domain(args[name]);
+    const domain = distribObj.domain(args_[i]);
     if (
-      distribObj.isInDomain(args[name], -1) &&
-          distribObj.isInDomain(args[name], 1)
+      distribObj.isInDomain(args_[i], -1) &&
+          distribObj.isInDomain(args_[i], 1)
     )
-      vars[name] = [-1, 1];
+      vars_[i] = [-1, 1];
     else if (!isNullish(domain.min) && !isNullish(domain.max))
-      vars[name] = [domain.min, domain.max];
+      vars_[i] = [domain.min, domain.max];
     else if (
-      distribObj.isInDomain(args[name], 0) &&
-          distribObj.isInDomain(args[name], 1)
+      distribObj.isInDomain(args_[i], 0) &&
+          distribObj.isInDomain(args_[i], 1)
     )
-      vars[name] = [0, 1];
+      vars_[i] = [0, 1];
     else if (!isNullish(domain.min)) {
-      vars[name] = [domain.min, domain.min+1];
+      vars_[i] = [domain.min, domain.min+1];
     } else if (!isNullish(domain.max)) {
-      vars[name] = [domain.max-1, domain.max];
+      vars_[i] = [domain.max-1, domain.max];
     } else {
-      vars[name] = [-1, 1];
+      vars_[i] = [-1, 1];
     }
   }
   return {
-    args,
-    vars
+    args_,
+    vars_
   };
 };
